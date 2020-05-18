@@ -24,11 +24,11 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
-		<!--<dependency>
+		<dependency>
 			<groupId>org.optaplanner</groupId>
 			<artifactId>optaplanner-spring-boot-starter</artifactId>
 			<version>7.34.0.Final</version>
-		</dependency>-->
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

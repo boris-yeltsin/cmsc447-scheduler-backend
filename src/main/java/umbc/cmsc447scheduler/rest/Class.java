@@ -1,5 +1,9 @@
 package umbc.cmsc447scheduler.rest;
 
+import java.util.UUID;
+
+import umbc.cmsc447scheduler.domain.Course;
+
 public class Class {
     private final String subject;
     private final String course;
@@ -54,5 +58,13 @@ public class Class {
 
     public int getCapacity() {
         return capacity;
+    }
+
+    public Course toOptaplannerType() {
+        //return new Room(UUID.randomUUID().hashCode(), this.classroom, this.capacity);
+        int day = 1; // todo extract from this.time
+        int time = 1; // todo ^
+        int sec = Integer.parseInt(this.sec);
+        return new Course(UUID.randomUUID().hashCode(), this.subject, this.course, this.course_title, sec, this.capacity, day, time, this.instructor_real_name, this.ver);
     }
 }
