@@ -65,7 +65,8 @@ class ScheduleController {
                 c.getInstructor(),
                 time,
                 c.getRoom().getName(),
-                c.getCapacity()
+                c.getCapacity(),
+                c.getRoom().getCapacity()
             );
         }
 
@@ -85,8 +86,8 @@ class ScheduleController {
     }
     
     private ScheduledClass[] getExampleSchedule() {
-        ScheduledClass example_class1 = new ScheduledClass("CMSC", "104", "Problem Solving & Prog.", "", "1", "Staff", "tt530", "Public Policy 105", 40);
-        ScheduledClass example_class2 = new ScheduledClass("CMSC", "201", "Computer Science I", "", "1", "Hamilton, Eric", "mw1", "Engineering 122", 40);
+        ScheduledClass example_class1 = new ScheduledClass("CMSC", "104", "Problem Solving & Prog.", "", "1", "Staff", "tt530", "Public Policy 105", 40, 40);
+        ScheduledClass example_class2 = new ScheduledClass("CMSC", "201", "Computer Science I", "", "1", "Hamilton, Eric", "mw1", "Engineering 122", 40, 40);
         ScheduledClass[] example_schedule = new ScheduledClass[2];
         example_schedule[0] = example_class1;
         example_schedule[1] = example_class2;
