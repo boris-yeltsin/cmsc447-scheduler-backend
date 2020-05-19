@@ -65,8 +65,8 @@ public class Class {
     public Course toOptaplannerType() {
         int day = 1;
         int time = 1;
-        Pattern pattern = Pattern.compile("^([a-zA-Z]+)(\\d+)$");
-        Matcher m = pattern.matcher(this.time);
+        Pattern pattern = Pattern.compile("^(mwf|tt|mw)(\\d+)$");
+        Matcher m = pattern.matcher(this.time.toLowerCase());
         if(m.find()) {
            day = getIntFromDayStr(m.group(1));
            time = Integer.parseInt(m.group(2));

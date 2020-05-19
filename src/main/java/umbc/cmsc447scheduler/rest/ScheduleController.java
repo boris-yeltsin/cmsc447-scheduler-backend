@@ -8,6 +8,8 @@ import java.util.concurrent.ExecutionException;
 import org.optaplanner.core.api.solver.SolverJob;
 import org.optaplanner.core.api.solver.SolverManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +27,7 @@ class ScheduleController {
 
     @PostMapping(path = "/schedule", consumes = "application/json", produces = "application/json")
     @CrossOrigin(origins = "*")
-    public ScheduledClass[] getSchedule(@RequestBody SchedulerInput input) {
+    public ResponseEntity<ScheduledClass[]> getSchedule(@RequestBody SchedulerInput input) {
         UUID problemId = UUID.randomUUID();
 
         int numCourses = input.getClasses().length;
@@ -46,6 +48,10 @@ class ScheduleController {
             solution = solverJob.getFinalBestSolution();
         } catch (InterruptedException | ExecutionException e) {
             throw new IllegalStateException("Solving failed.", e);
+        }
+
+        if(solution.getScore().getHardScore() < 0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
         List<Course> solutionCourseList = solution.getCourseList();
@@ -70,8 +76,36 @@ class ScheduleController {
             );
         }
 
-        return schedule;
+        return new ResponseEntity<ScheduledClass[]>(schedule, HttpStatus.OK);
     }
+
+    /*@PostMapping(path = "/schedule", consumes = "application/json", produces = "application/json")
+    @CrossOrigin(origins = "*")
+    public RoomSchedule getSchedule(@RequestBody SchedulerInput input) {
+        UUID problemId = UUID.randomUUID();
+
+        int numCourses = input.getClasses().length;
+        int numClassrooms = input.getClassrooms().length;
+        Course[] courses = new Course[input.getClasses().length];
+        Room[] rooms = new Room[input.getClassrooms().length];
+        for(int i = 0; i < numCourses; i++) {
+            courses[i] = input.getClasses()[i].toOptaplannerType();
+        }
+        for(int i = 0; i < numClassrooms; i++) {
+            rooms[i] = input.getClassrooms()[i].toOptaplannerType();
+        }
+
+        RoomSchedule problem = new RoomSchedule(Arrays.asList(rooms), Arrays.asList(courses));
+        SolverJob<RoomSchedule, UUID> solverJob = solverManager.solve(problemId, problem);
+        RoomSchedule solution;
+        try {
+            solution = solverJob.getFinalBestSolution();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new IllegalStateException("Solving failed.", e);
+        }
+
+        return solution;
+    }*/
 
     /*@PostMapping(path = "/schedule", consumes = "application/json", produces = "application/json")
     @CrossOrigin(origins = "*")
