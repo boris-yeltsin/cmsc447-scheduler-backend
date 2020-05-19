@@ -67,12 +67,12 @@ public class Class {
 
     public Course toOptaplannerType() {
         List<Integer> day = new ArrayList<>();
-        int time = 1;
+        int time = 0;
         Pattern pattern = Pattern.compile("^(mwf|tt|mw)(\\d+)$");
         Matcher m = pattern.matcher(this.time.toLowerCase());
         if(m.find()) {
            day = getIntFromDayStr(m.group(1));
-           time = Integer.parseInt(m.group(2));
+           time = formatTime(Integer.parseInt(m.group(2)));
         }
         int sec = Integer.parseInt(this.sec);
         return new Course(UUID.randomUUID().hashCode(), this.subject, this.course, this.course_title, sec, this.ver, this.instructor_real_name, this.capacity, day, time);
