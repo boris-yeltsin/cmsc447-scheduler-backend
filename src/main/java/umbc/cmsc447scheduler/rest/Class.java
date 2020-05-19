@@ -1,6 +1,8 @@
 package umbc.cmsc447scheduler.rest;
 
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import umbc.cmsc447scheduler.domain.Course;
 
@@ -61,10 +63,42 @@ public class Class {
     }
 
     public Course toOptaplannerType() {
-        //return new Room(UUID.randomUUID().hashCode(), this.classroom, this.capacity);
-        int day = 1; // todo extract from this.time
-        int time = 1; // todo ^
+        int day = 1;
+        int time = 1;
+        Pattern pattern = Pattern.compile("^([a-zA-Z]+)(\\d+)$");
+        Matcher m = pattern.matcher(this.time);
+        if(m.find()) {
+           day = getIntFromDayStr(m.group(1));
+           time = Integer.parseInt(m.group(2));
+        }
         int sec = Integer.parseInt(this.sec);
         return new Course(UUID.randomUUID().hashCode(), this.subject, this.course, this.course_title, sec, this.capacity, day, time, this.instructor_real_name, this.ver);
+    }
+
+    public static int getIntFromDayStr(String days) {
+        days = days.toLowerCase();
+        switch(days) {
+            case "tt":
+                return 1;
+            case "mw":
+                return 2;
+            case "mwf":
+                return 3;
+            default:
+                return 0;
+        }
+    }
+
+    public static String getDayStrFromInt(int days) {
+        switch(days) {
+            case 1:
+                return "tt";
+            case 2:
+                return "mw";
+            case 3:
+                return "mwf";
+            default:
+                return "";
+        }
     }
 }

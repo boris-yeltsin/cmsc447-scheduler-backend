@@ -154,7 +154,5 @@ public void setVer(String ver) {
         this.time = time;
         this.instructor = instructor;
         this.ver = ver;
-        //this.day = day;
-        //this.period = period;
     }
 }
