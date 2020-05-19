@@ -60,7 +60,7 @@ class ScheduleController {
 
         for(int i = 0; i < solutionCourseListSize; i++) {
             Course c = solutionCourseList.get(i);
-            String time = Class.getDayStrFromInt(c.getDay()) + Integer.toString(c.getTime());
+            String time = Class.getDayStrFromInt(c.getDay()) + " " + Integer.toString(c.getTime());
             String section = Integer.toString(c.getSection());
             schedule[i] = new ScheduledClass(
                 c.getSubject(),
