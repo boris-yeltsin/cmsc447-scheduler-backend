@@ -1,19 +1,19 @@
 <solver>
  
-    <!-- Domain model configuration -->
-    <solutionClass>umbc.cmsc447scheduler.domain.RoomSchedule</solutionClass>
-      <entityClass>umbc.cmsc447scheduler.domain.Course</entityClass>
-   
-   
-    <!-- Score configuration -->
-    <scoreDirectorFactory>
-      <scoreDrl>RoomScheduleScoreRules.drl</scoreDrl>
-     </scoreDirectorFactory>
-   
-    <!-- Optimization algorithms configuration -->
-    <termination>
-      <secondsSpentLimit>10</secondsSpentLimit>
-    </termination>
-   
-   
-  </solver>
+  <!-- Domain model configuration -->
+  <solutionClass>umbc.cmsc447scheduler.domain.RoomSchedule</solutionClass>
+    <entityClass>umbc.cmsc447scheduler.domain.Course</entityClass>
+ 
+ 
+  <!-- Score configuration -->
+  <scoreDirectorFactory>
+    <scoreDrl>RoomScheduleScoreRules.drl</scoreDrl>
+   </scoreDirectorFactory>
+ 
+  <!-- Optimization algorithms configuration -->
+  <termination>
+    <secondsSpentLimit>5</secondsSpentLimit>
+  </termination>
+ 
+ 
+</solver>

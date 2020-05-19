@@ -1,5 +1,8 @@
 package umbc.cmsc447scheduler.rest;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -63,7 +66,7 @@ public class Class {
     }
 
     public Course toOptaplannerType() {
-        int day = 1;
+        List<Integer> day = new ArrayList<>();
         int time = 1;
         Pattern pattern = Pattern.compile("^(mwf|tt|mw)(\\d+)$");
         Matcher m = pattern.matcher(this.time.toLowerCase());
@@ -72,33 +75,52 @@ public class Class {
            time = Integer.parseInt(m.group(2));
         }
         int sec = Integer.parseInt(this.sec);
-        return new Course(UUID.randomUUID().hashCode(), this.subject, this.course, this.course_title, sec, this.capacity, day, time, this.instructor_real_name, this.ver);
+        return new Course(UUID.randomUUID().hashCode(), this.subject, this.course, this.course_title, sec, this.ver, this.instructor_real_name, this.capacity, day, time);
     }
 
-    public static int getIntFromDayStr(String days) {
+    public static List<Integer> getIntFromDayStr(String days) {
         days = days.toLowerCase();
         switch(days) {
             case "tt":
-                return 1;
+                return new ArrayList<Integer>(Arrays.asList(2,4));
             case "mw":
-                return 2;
+                return new ArrayList<Integer>(Arrays.asList(1,3));
             case "mwf":
-                return 3;
-            default:
-                return 0;
+                return new ArrayList<Integer>(Arrays.asList(1,3,5));
+            default: // should never be called since pattern only matches above cases
+                return new ArrayList<Integer>(Arrays.asList(0));
         }
     }
 
-    public static String getDayStrFromInt(int days) {
-        switch(days) {
-            case 1:
-                return "tt";
-            case 2:
-                return "mw";
-            case 3:
-                return "mwf";
-            default:
-                return "";
+    public static String getDayStrFromInt(List<Integer> day) {
+        String days = "";
+        for (int i = 0; i < day.size(); i++) {
+            if (day.get(i) == 1)
+                days = days + "Mo";
+            else if (day.get(i) == 2)
+                days = days + "Tu";
+            else if (day.get(i) == 3)
+                days = days + "We";
+            else if (day.get(i) == 4)
+                days = days + "Th";
+            else if (day.get(i) == 5)
+                days = days + "Fr";
+            if (i != day.size()-1)
+                days = days + " & ";
         }
+        return days;
+    }
+
+    public static int formatTime(int time) {
+        if (time < 100) {
+            time = time*100;
+            if (time < 1000)
+                time = time + 1200; // set it to PM time, else it is AM
+        }
+        else {
+            if (time < 1000)
+                time = time + 1200;
+        }
+        return time;
     }
 }

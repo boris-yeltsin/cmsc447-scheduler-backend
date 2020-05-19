@@ -17,6 +17,8 @@
 package umbc.cmsc447scheduler.domain;
 
 import java.util.Comparator;
+import java.util.List;
+
 import org.optaplanner.core.api.domain.entity.PlanningEntity;
 import org.optaplanner.core.api.domain.variable.PlanningVariable;
  
@@ -35,7 +37,7 @@ public class Course  extends AbstractPersistable{
     private String ver;
     private int section;
     private int capacity;
-    private int day;
+    private List<Integer> day;
     private int time;
     private Room room;
     
@@ -58,11 +60,11 @@ public class Course  extends AbstractPersistable{
     }
     
 // coursetitle
-    public String getCourseTitle() {
+    public String getCoursetitle() {
         return coursetitle;
     }
  
-    public void setCourseTitle(String coursetitle) {
+    public void setCoursetitle(String coursetitle) {
         this.coursetitle = coursetitle;
     }
 
@@ -102,11 +104,11 @@ public void setVer(String ver) {
     }
    
 // day
-    public int getDay() {
+    public List<Integer> getDay() {
         return day;
     }
- 
-    public void setDay(int day) {
+
+    public void setDay(List<Integer> day) {
         this.day = day;
     }
     
@@ -143,7 +145,7 @@ public void setVer(String ver) {
  
     public Course(){}
  
-    public Course(int id, String subject, String course_num, String coursetitle, int section, int capacity, int day, int time, String instructor, String ver) {
+    public Course(int id, String subject, String course_num, String coursetitle, int section, String ver, String instructor, int capacity, List<Integer> day, int time) {
         super(id);
         this.subject = subject;
         this.course_num = course_num;

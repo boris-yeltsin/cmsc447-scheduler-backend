@@ -65,7 +65,7 @@ class ScheduleController {
             schedule[i] = new ScheduledClass(
                 c.getSubject(),
                 c.getCourse_num(),
-                c.getCourseTitle(),
+                c.getCoursetitle(),
                 c.getVer(),
                 section,
                 c.getInstructor(),

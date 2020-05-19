@@ -1,9 +1,11 @@
 package umbc.cmsc447scheduler.solver;
  
 import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScoreHolder;
+import org.optaplanner.core.api.score.buildin.bendable.BendableScoreHolder;
 import umbc.cmsc447scheduler.domain.Course;
 import umbc.cmsc447scheduler.domain.Room;
 import umbc.cmsc447scheduler.domain.RoomSchedule;
+//global BendableScoreHolder scoreHolder;
  
 global HardSoftScoreHolder scoreHolder;
 
@@ -11,16 +13,23 @@ rule "fitcapacity"
 	when
 		$course : Course(room != null, capacity > getRoom().getCapacity())
 	then
+    	scoreHolder.addHardConstraintMatch(kcontext, -1);
+end
+
+rule "uniqueclass"
+	when
+		Course($leftId : id,  $subject : subject, $course_num : course_num, $title : coursetitle, $section : section)
+        Course(id > $leftId, subject == $subject, course_num == $course_num, coursetitle == $title, section == $section)
+	then
     	scoreHolder.addHardConstraintMatch(kcontext, -100);
 end
 
-
 rule "conficttime"
-	when 
+	when
 		Course($leftId : id, $leftRoom : room, $day : day, $time : time)
-        Course(room == $leftRoom, day == $day, time == $time, id != $leftId)
+        Course(room == $leftRoom, day.get(0) == $day.get(0), time == $time, id != $leftId)
 	then
-		scoreHolder.addHardConstraintMatch(kcontext, -1000);
+		scoreHolder.addHardConstraintMatch(kcontext, -10);
 end
 
 
