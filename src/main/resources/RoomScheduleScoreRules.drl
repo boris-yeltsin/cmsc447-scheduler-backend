@@ -32,6 +32,14 @@ rule "Time Conflict"
 		scoreHolder.addHardConstraintMatch(kcontext, -10);
 end
 
+rule "Instructor Conflict"
+	when
+		Course($leftId : id,  $day : day, $instructor : instructor, $time : time)
+        Course(id > $leftId, instructor != "Staff", instructor != "staff", instructor == $instructor, time == $time, day.get(0) == $day.get(0))
+	then
+    	scoreHolder.addHardConstraintMatch(kcontext, -100);
+end
+
 
 rule "Similar Capacity"
 	when
