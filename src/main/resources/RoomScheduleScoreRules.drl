@@ -9,14 +9,14 @@ import umbc.cmsc447scheduler.domain.RoomSchedule;
  
 global HardSoftScoreHolder scoreHolder;
 
-rule "fitcapacity"
+rule "Room Capacity"
 	when
 		$course : Course(room != null, capacity > getRoom().getCapacity())
 	then
     	scoreHolder.addHardConstraintMatch(kcontext, -1);
 end
 
-rule "uniqueclass"
+rule "Unique Class"
 	when
 		Course($leftId : id,  $subject : subject, $course_num : course_num, $title : coursetitle, $section : section)
         Course(id > $leftId, subject == $subject, course_num == $course_num, coursetitle == $title, section == $section)
@@ -24,7 +24,7 @@ rule "uniqueclass"
     	scoreHolder.addHardConstraintMatch(kcontext, -100);
 end
 
-rule "conficttime"
+rule "Time Conflict"
 	when
 		Course($leftId : id, $leftRoom : room, $day : day, $time : time)
         Course(room == $leftRoom, day.get(0) == $day.get(0), time == $time, id != $leftId)
@@ -33,35 +33,9 @@ rule "conficttime"
 end
 
 
-rule "similarcapacity"
+rule "Similar Capacity"
 	when
 		$course : Course(room != null, capacity < getRoom().getCapacity())
 	then
     	scoreHolder.addSoftConstraintMatch(kcontext, $course.getCapacity() - $course.getRoom().getCapacity());
 end
-
-/*
-rule "roomCapacity"
-when
-    $room : Room($capacity : capacity)
-    accumulate(
-        Course(
-            room == $room,
-            $amount : amount);
-        $amountTotal : sum($amount);
-        $amountTotal > $capacity
-        )
-then
-    scoreHolder.addHardConstraintMatch(kcontext, $capacity - $amountTotal);
-end
-
- 
- 
-rule "machineCost_used"
-when
-    $machine : Machine($cost : cost)
-    exists Task(machine == $machine)
-then
-    scoreHolder.addSoftConstraintMatch(kcontext, -$cost);            
-end
-*/
